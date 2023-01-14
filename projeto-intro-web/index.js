@@ -73,22 +73,22 @@ let filme3 = {
     ganhadorOscar: true
 }
 
-// // const filmesNomeados = []
-// // let filme
+const filmesNomeados = []
+let filme
 
-// // function verificarFilmeNomeado (filme){
-// //     if(filme.nomeadoOscar){
-// //         filmesNomeados.push(filme)
-// //         console.log(`O filme ${filme.titulo} foi adicionado à lista de Filmes Nomeados ao Oscar`)
-// //     }else{
-// //         alert(`O filme ${filme.titulo} não foi adicionado`)
-// //     }
-// // }
-// // verificarFilmeNomeado(filme1)
-// // verificarFilmeNomeado(filme2)
-// // verificarFilmeNomeado(filme3)
+// function verificarFilmeNomeado (filme){
+//     if(filme.nomeadoOscar){
+//         filmesNomeados.push(filme)
+//         console.log(`O filme ${filme.titulo} foi adicionado à lista de Filmes Nomeados ao Oscar`)
+//     }else{
+//         alert(`O filme ${filme.titulo} não foi adicionado`)
+//     }
+// }
+// verificarFilmeNomeado(filme1)
+// verificarFilmeNomeado(filme2)
+// verificarFilmeNomeado(filme3)
 
-// // console.log(filmesNomeados)
+// console.log(filmesNomeados)
 
 
 // // SEMANA 3
@@ -144,7 +144,7 @@ filmes.push(filme1,filme2,filme3)
 //         console.log(`${propriedades}: ${objeto[propriedades]}`)
 //     }
 // }
-// retornarRelatorio()
+// retornarRelatorio(filme1)
 
 // function retornarObjetoQueTemONomeNaString (arrayDeObj,string) {
 //     for(objeto of arrayDeObj){
@@ -340,7 +340,7 @@ filmes.sort()
         mainFilms.insertAdjacentElement("beforeend", section);
     }
 
-    // fazer uma funcao para buscar palavra e aparecer item quando apertarbotao ou onkeydown:
+    // fazer uma funcao para buscar palavra e aparecer item quando apertar tecla com onkeyup:
     // TESTAR: se digitar "o" ou "O", puxar 3 itens
     let filmeInput = document.getElementById("film-input");
     const sectionFilm = document.getElementsByClassName("filme");
@@ -361,11 +361,11 @@ filmes.sort()
             if(title.children[2].children[1].className == "filme-nomeado" ){
                 // console.log(title.children[1].innerText, "pode aparecer na TextTrackList, pois possui a classe: 'filme-nomeado'")
                     if(title.children[1].innerText.includes(filmeInput.value.toLocaleUpperCase())){
-                        console.log(title.children[1].innerText,'(DISPLAY "")')
+                        // console.log(title.children[1].innerText,'(DISPLAY "")')
                         title.style.display = ""
                     }else if(title.children[1].innerText.includes(filmeInput.value.toLocaleUpperCase()) === false){
                         title.style.display = "none"
-                        console.log(title.children[1].innerText, "-- DISPLAY NONE--")
+                        // console.log(title.children[1].innerText, "-- DISPLAY NONE--")
 
                         arrayDisplayNone.push(title.children[1].innerText)
                         if(arrayDisplayNone.length === 6){
@@ -379,14 +379,15 @@ filmes.sort()
                 // console.log(title.children[1].innerText, "entrou no if, pois nao possui a classe: 'filme-nomeado',por isso nao aparece na tela")
             }
         }
-        console.log(arrayDisplayNone)
-        console.log(filmeInput.value.toUpperCase())
+        console.log("Lista de filmes que nao condizem com o input:",arrayDisplayNone)
+        console.log("O input procurado foi:",filmeInput.value.toUpperCase())
         // filmeInput.value = ""
         filmeInput.innerHTML = ""
         arrayDisplayNone.splice(0,6)
-        console.log(arrayDisplayNone)
+        // console.log(arrayDisplayNone)
     }
 
+    //Funcao para pesquisar com o botao:
     const searchFilmButton = (event) => {
         event.preventDefault();
         mensagemEscondida.style.display = "none"
@@ -399,11 +400,11 @@ filmes.sort()
             if(title.children[2].children[1].className == "filme-nomeado" ){
                 // console.log(title.children[1].innerText, "pode aparecer na TextTrackList, pois possui a classe: 'filme-nomeado'")
                     if(title.children[1].innerText.includes(filmeInput.value.toLocaleUpperCase())){
-                        console.log(title.children[1].innerText,'(DISPLAY "")')
+                        // console.log(title.children[1].innerText,'(DISPLAY "")')
                         title.style.display = ""
                     }else if(title.children[1].innerText.includes(filmeInput.value.toLocaleUpperCase()) === false){
                         title.style.display = "none"
-                        console.log(title.children[1].innerText, "-- DISPLAY NONE--")
+                        // console.log(title.children[1].innerText, "-- DISPLAY NONE--")
 
                         arrayDisplayNone.push(title.children[1].innerText)
                         if(arrayDisplayNone.length === 6){
@@ -425,6 +426,7 @@ filmes.sort()
         console.log(arrayDisplayNone)
     }
 
+    //Funcao para limpar o campo de pesquisa:
     const clearInput = (event) => {
         event.preventDefault();
         filmeInput.value = ""
@@ -434,7 +436,7 @@ filmes.sort()
         for(title of sectionFilm){
             if(title.children[2].children[1].className == "filme-nomeado" ){
                     if(title.children[1].innerText.includes(filmeInput.value.toLocaleUpperCase())){
-                        console.log(title.children[1].innerText,'(DISPLAY "")')
+                        // console.log(title.children[1].innerText,'(DISPLAY "")')
                         title.style.display = ""
                     }
             }else{
