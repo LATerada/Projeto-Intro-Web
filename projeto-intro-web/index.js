@@ -7,7 +7,7 @@
 
 // const titulo1 = "O REGRESSO"
 // const anoLancamento1 = 2015
-// const nomeadOscar1 = true
+// const nomeadoOscar1 = true
 
 // const titulo2 = "MATRIX RESURRECTIONS"
 // const anoLancamento2 = 2021
@@ -18,12 +18,12 @@
 // const nomeadoOscar3 = true
 
 // // CALCULO DA MEDIA DE ANOS
-// // const mediaAnos = (anoLancamento1 + anoLancamento2 + anoLancamento3)/3
-// //     console.log(mediaAnos.toFixed(0))
+// const mediaAnos = (anoLancamento1 + anoLancamento2 + anoLancamento3)/3
+//     console.log(`CALCULO DA MEDIA DE ANOS: ${mediaAnos.toFixed(0)}`)
 
 // // BOOLEANO SE TODOS OS FILMES FORAM NOMEADOS
-// // const nomeadosOscar = nomeadoOscar1 && nomeadoOscar2 && nomeadoOscar3
-// //     console.log(nomeadosOscar)
+// const nomeadosOscar = nomeadoOscar1 && nomeadoOscar2 && nomeadoOscar3
+//     console.log(`BOOLEANO SE TODOS OS FILMES FORAM NOMEADOS: ${nomeadosOscar}`)
 
 // //const atoresPrincipais
 // const atoresPrincipais1 = ["Leonardo DiCaprio", "Tom Hardy", "Domhnall Gleeson"]
@@ -138,13 +138,6 @@ filmes.push(filme1,filme2,filme3)
 //     }
 // }
 
-// //FUNCAO QUE RETORNA RELATORIO DE OBJETO
-// const retornarRelatorio = (objeto) => {
-//     for(propriedades in objeto){
-//         console.log(`${propriedades}: ${objeto[propriedades]}`)
-//     }
-// }
-// retornarRelatorio(filme1)
 
 // function retornarObjetoQueTemONomeNaString (arrayDeObj,string) {
 //     for(objeto of arrayDeObj){
@@ -253,11 +246,37 @@ let filme8 = {
 }
 
 filmes.push(filme4,filme5,filme6,filme7,filme8)
-filmes.sort()
+// //MEDIA DOS ANOS DE LANCAMENTO:
+    let somaAnos = 0
+    let fator = 0
+    let mediaAnos = 0
 
+    for(filme of filmes){
+        somaAnos += filme.anoLancamento
+        fator ++
+        mediaAnos = somaAnos / fator
+    }
+    console.log(`A MÉDIA DOS ANOS DE LANCAMENTOS É: ${mediaAnos.toFixed()}`)
+
+
+// //FUNCAO QUE RETORNA RELATORIO DE OBJETO
+    const retornarRelatorio = (objeto) => {
+        console.log(`
+        Imprimindo relatório de filmes:`)
+        for(chave in objeto){
+            console.log(`${chave}: ${objeto[chave]}`)
+        }
+        console.log(`
+        `)
+    }
+
+    for(filme in filmes){
+        retornarRelatorio(filmes[filme])
+    }
+
+// //CRIANDO CARDS COM OS OBJETOS CONTIDOS NO ARRAY COM O DOM.
     const mainFilms = document.getElementById("main-filmes")
 
-    // criar o card com as infos do objeto "filme" do array.
     for(filme of filmes){
         const section = document.createElement("section");
         section.setAttribute("class","filme");
@@ -340,29 +359,33 @@ filmes.sort()
         mainFilms.insertAdjacentElement("beforeend", section);
     }
 
-    // fazer uma funcao para buscar palavra e aparecer item quando apertar tecla com onkeyup:
-    // TESTAR: se digitar "o" ou "O", puxar 3 itens
     let filmeInput = document.getElementById("film-input");
     const sectionFilm = document.getElementsByClassName("filme");
     const mensagemEscondida = document.getElementById("hidden-message");
     const footer = document.getElementById("footer");
+    const arrayDisplay = []
     const arrayDisplayNone = []
     // console.log(sectionFilm)
 
-    const searchFilm = (event) => {
-        // event.preventDefault();
+    const searchFilm = () => {
         mensagemEscondida.style.display = "none"
-        footer.style.display = "flex"
+
+        if(filmeInput.value == ""){
+            alert("Por favor, digite algum caracter para gerar pesquisa.")
+        }
 
         //primeiro filtrar os filmes q n podem ser pesquisados,pois nao sao nomeados
-        // segundo é fazer aparecer somente os filmes com as letras e palavras incluidas nos titulos
+        // segundo é fazer aparecer somente os filmes com as letras e palavras que estao inclusas nos titulos
         for(title of sectionFilm){
-            // para conseguir chamar no if, todos os itens precisavam ter as mesmas condicoes de ter o mesmo length e tambem class name. Agora todos tem o mesmo numero de itens, porem o nome da classe é o diferencial.
+            // para conseguir chamar no if, todos os itens precisavam ter as mesmas condicoes de ter o mesmo length e class, pq se nao dá erro de o if nao encontrar o esperado na posicao determinada. 
+            //todas as sections tem o mesmo numero de itens/tags, porem o nome da classe é o diferencial.
             if(title.children[2].children[1].className == "filme-nomeado" ){
                 // console.log(title.children[1].innerText, "pode aparecer na TextTrackList, pois possui a classe: 'filme-nomeado'")
                     if(title.children[1].innerText.includes(filmeInput.value.toLocaleUpperCase())){
                         // console.log(title.children[1].innerText,'(DISPLAY "")')
                         title.style.display = ""
+
+                        arrayDisplay.push(title.children[1].innerText)
                     }else if(title.children[1].innerText.includes(filmeInput.value.toLocaleUpperCase()) === false){
                         title.style.display = "none"
                         // console.log(title.children[1].innerText, "-- DISPLAY NONE--")
@@ -370,7 +393,6 @@ filmes.sort()
                         arrayDisplayNone.push(title.children[1].innerText)
                         if(arrayDisplayNone.length === 6){
                             mensagemEscondida.style.display = "inherit"
-                            // footer.style.display = "none"
                             console.log("----- NENHUM FILME FOI ENCONTRADO -----")
                         }
                     }
@@ -379,68 +401,56 @@ filmes.sort()
                 // console.log(title.children[1].innerText, "entrou no if, pois nao possui a classe: 'filme-nomeado',por isso nao aparece na tela")
             }
         }
-        console.log("Lista de filmes que nao condizem com o input:",arrayDisplayNone)
+
         console.log("O input procurado foi:",filmeInput.value.toUpperCase())
-        // filmeInput.value = ""
-        filmeInput.innerHTML = ""
+        console.log("Lista de filmes que nao condizem com o input:",arrayDisplayNone)
         arrayDisplayNone.splice(0,6)
-        // console.log(arrayDisplayNone)
-    }
-
-    //Funcao para pesquisar com o botao:
-    const searchFilmButton = (event) => {
-        event.preventDefault();
-        mensagemEscondida.style.display = "none"
-        footer.style.display = "flex"
-
-        //primeiro filtrar os filmes q n podem ser pesquisados,pois nao sao nomeados
-        // segundo é fazer aparecer somente os filmes com as letras e palavras incluidas nos titulos
-        for(title of sectionFilm){
-            // para conseguir chamar no if, todos os itens precisavam ter as mesmas condicoes de ter o mesmo length e tambem class name. Agora todos tem o mesmo numero de itens, porem o nome da classe é o diferencial.
-            if(title.children[2].children[1].className == "filme-nomeado" ){
-                // console.log(title.children[1].innerText, "pode aparecer na TextTrackList, pois possui a classe: 'filme-nomeado'")
-                    if(title.children[1].innerText.includes(filmeInput.value.toLocaleUpperCase())){
-                        // console.log(title.children[1].innerText,'(DISPLAY "")')
-                        title.style.display = ""
-                    }else if(title.children[1].innerText.includes(filmeInput.value.toLocaleUpperCase()) === false){
-                        title.style.display = "none"
-                        // console.log(title.children[1].innerText, "-- DISPLAY NONE--")
-
-                        arrayDisplayNone.push(title.children[1].innerText)
-                        if(arrayDisplayNone.length === 6){
-                            mensagemEscondida.style.display = "inherit"
-                            // footer.style.display = "none"
-                            console.log("----- NENHUM FILME FOI ENCONTRADO -----")
-                        }
-                    }
-            }else{
-                title.style.display = "none"
-                // console.log(title.children[1].innerText, "entrou no if, pois nao possui a classe: 'filme-nomeado',por isso nao aparece na tela")
-            }
-        }
-        console.log(arrayDisplayNone)
-        console.log(filmeInput.value.toUpperCase())
         filmeInput.value = ""
-        filmeInput.innerHTML = ""
-        arrayDisplayNone.splice(0,6)
-        console.log(arrayDisplayNone)
     }
 
-    //Funcao para limpar o campo de pesquisa:
-    const clearInput = (event) => {
-        event.preventDefault();
-        filmeInput.value = ""
-        mensagemEscondida.style.display = "none"
-        footer.style.display = "flex"
+// // Funcao para buscar palavra e aparecer item quando apertar tecla com onkeyup:
+    // const searchFilmButton = (event) => {
+    //     event.preventDefault();
+    //     mensagemEscondida.style.display = "none"
 
-        for(title of sectionFilm){
-            if(title.children[2].children[1].className == "filme-nomeado" ){
-                    if(title.children[1].innerText.includes(filmeInput.value.toLocaleUpperCase())){
-                        // console.log(title.children[1].innerText,'(DISPLAY "")')
-                        title.style.display = ""
-                    }
-            }else{
-                title.style.display = "none"
-            }
-        }
-    }
+    //     for(title of sectionFilm){
+    //         if(title.children[2].children[1].className == "filme-nomeado" ){
+    //                 if(title.children[1].innerText.includes(filmeInput.value.toLocaleUpperCase())){
+    //                     title.style.display = ""
+    //                 }else if(title.children[1].innerText.includes(filmeInput.value.toLocaleUpperCase()) === false){
+    //                     title.style.display = "none"
+
+    //                     arrayDisplayNone.push(title.children[1].innerText)
+    //                     if(arrayDisplayNone.length === 6){
+    //                         mensagemEscondida.style.display = "inherit"
+    //                         console.log("----- NENHUM FILME FOI ENCONTRADO -----")
+    //                     }
+    //                 }
+    //         }else{
+    //             title.style.display = "none"
+    //         }
+    //     }
+    //     console.log("O input procurado foi:",filmeInput.value.toUpperCase())
+    //     console.log("Lista de filmes que nao condizem com o input:",arrayDisplayNone)
+    //     arrayDisplayNone.splice(0,6)
+    //     filmeInput.innerHTML = ""
+    // }
+
+// //Funcao para limpar o campo de pesquisa:
+    // const clearInput = (event) => {
+    //     event.preventDefault();
+    //     filmeInput.value = ""
+    //     mensagemEscondida.style.display = "none"
+    //     footer.style.display = "flex"
+
+    //     for(title of sectionFilm){
+    //         if(title.children[2].children[1].className == "filme-nomeado" ){
+    //                 if(title.children[1].innerText.includes(filmeInput.value.toLocaleUpperCase())){
+    //                     // console.log(title.children[1].innerText,'(DISPLAY "")')
+    //                     title.style.display = ""
+    //                 }
+    //         }else{
+    //             title.style.display = "none"
+    //         }
+    //     }
+    // }
